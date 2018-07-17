@@ -7,7 +7,7 @@
  *
  ******************************************************************************/
 
-package edu.princeton.cs.algs4;
+package lib;
 
 import java.util.Arrays;
 import java.util.Comparator;
