@@ -1,6 +1,7 @@
 package chap1.section1.demo;
 
 import java.util.Arrays;
+import java.util.DoubleSummaryStatistics;
 
 import lib.StdDraw;
 import lib.StdRandom;
@@ -8,8 +9,8 @@ import lib.StdRandom;
 public class BasicGraphs {
     public static void main(String... args) {
 //        testArrayGraph(false);
-//        testArrayGraph(true);
-        testVisualAccumulator();
+        testArrayGraph(true);
+//        testVisualAccumulator();
     }
 
     private static void testVisualAccumulator() {
@@ -23,24 +24,30 @@ public class BasicGraphs {
     }
 
     public class VisualAccumulator {
+        private final static double THIN_PEN = 0.001;
+        private final static double NORMAL_PEN = 0.003;
+        private final static double MARK_PEN = 0.01;
         double total;
+        double max = Double.MIN_VALUE;
         int count;
-        public VisualAccumulator(int theCount, double max) {
-            StdDraw.setXscale(0, theCount);
-            StdDraw.setYscale(0, max);
-            StdDraw.setPenRadius(max / 200);
+        public VisualAccumulator(int X, double Y) {
+            StdDraw.setXscale(0, X);
+            StdDraw.setYscale(0, Y);
+            StdDraw.setPenRadius(0.003);
         }
 
         public void add(double val) {
+            max = Math.max(val, max);
             total += val;
             count++;
+            System.out.println("val: " + val + " max: " + max + " total: " + total);
             StdDraw.setPenColor(StdDraw.BLACK);
             StdDraw.point(count, val);
             StdDraw.setPenColor(StdDraw.RED);
             StdDraw.point(count, mean());
         }
 
-        public double mean() { return total / count; }
+        public double mean() { return total / (1.0 * count); }
 
         @Override
         public String toString() {

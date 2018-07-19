@@ -1,13 +1,13 @@
 package chap2.section1;
 
 public class SortUtil {
-    public static int less(Comparable a, Comparable b) {
-        return a.compareTo(b);
+    public static boolean less(Comparable a, Comparable b) {
+        return a.compareTo(b) < 0;
     }
 
     public static boolean isAscended(Comparable[] arr) {
         for (int i = 1; i < arr.length; ++i) {
-            if (less(arr[i], arr[i-1]) < 0) return false;
+            if (less(arr[i], arr[i-1])) return false;
         }
         return true;
     }
