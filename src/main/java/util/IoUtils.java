@@ -6,4 +6,5 @@ public class IoUtils {
     public static String getResourcePath(String filePath) {
         return Paths.get("").toAbsolutePath().toString().concat("/src/main/resources/").concat(filePath);
     }
+
 }

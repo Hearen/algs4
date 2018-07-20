@@ -25,6 +25,7 @@ public class TestSort {
     private static void testSort(Comparable[] arr, SortTypeEnum typeEnum) {
         Integer[] newArr = (Integer[]) Arrays.copyOf(arr, arr.length);
         StopWatch timer = new StopWatch();
+        System.out.println("Array Size: " + arr.length);
 //        System.out.println(Arrays.deepToString(newArr));
         switch (typeEnum) {
             case INSERTION: InsertionSort.sort(newArr);  break;
@@ -34,28 +35,29 @@ public class TestSort {
             case QUICK: QuickSort.sort(newArr); break;
             default: break;
         }
-        System.out.println("**** End Of Sort ");
-        System.out.println(typeEnum.toString() + " " + timer);
+//        System.out.println("**** End Of Sort ");
+//        System.out.println(typeEnum.toString() + " " + timer);
         timerMap.computeIfAbsent(typeEnum, k -> new ArrayList<>()).add(timer.elapsedMillis());
-        System.out.println(Arrays.deepToString(newArr));
+//        System.out.println(Arrays.deepToString(newArr));
         assert isAscended(newArr) : typeEnum + " failed!";
     }
     public static void main(String... args) {
         for (int j = 0; j < TEST_TIMES; ++j) {
-            int N = 1_000;
-            Integer[] arr = Arrays.stream(Generator.generateRandomUniqueArrays(N, -N, N )).boxed().toArray(Integer[]::new);
-            Arrays.sort(arr);
-            for (int i = 0; i < arr.length / 2; ++i) {
-                exch(arr, i, arr.length - i - 1);
-            }
+            int N = 200_000;
+//            Integer[] arr = Arrays.stream(Generator.generateRandomUniqueArrays(N, -N, N)).boxed().toArray(Integer[]::new);
+            Integer[] arr = Arrays.stream(Generator.generateRandomSizeArrays(N, N + N / 10)).boxed().toArray(Integer[]::new);
+//            Arrays.sort(arr); // test the worse case for quick sort;
+//            for (int i = 0; i < arr.length / 2; ++i) {
+//                exch(arr, i, arr.length - i - 1);
+//            }
 //            System.out.println(Arrays.deepToString(arr));
 //            testSort(arr, SortTypeEnum.INSERTION);
 //            testSort(arr, SortTypeEnum.SELECTION);
-//            testSort(arr, SortTypeEnum.SHELL);
-            testSort(arr, SortTypeEnum.MERGE); // not working when N is above 20_000;
-//            testSort(arr, SortTypeEnum.QUICK); // not faster than merge or shell -> why?
+            testSort(arr, SortTypeEnum.SHELL);
+            testSort(arr, SortTypeEnum.MERGE);
+            testSort(arr, SortTypeEnum.QUICK);
         }
-        timerMap.entrySet().stream().forEach(System.out::println);
+//        timerMap.entrySet().stream().forEach(System.out::println);
         timerMap.entrySet().stream().forEach(entry -> {
             System.out.print(entry.getKey() + ": " + entry.getValue()
                     .stream().collect(Collectors.summarizingLong(Long::longValue)) + "\n");
