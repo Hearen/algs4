@@ -6,7 +6,7 @@ import java.util.Set;
 import lib.StdRandom;
 
 public class Generator {
-    private static final int NUMBER_RANGE = 1_000_000;
+    private static final int NUMBER_RANGE = 10_000;
 
     public static int[] generateRandomUniqueArrays(int size, int low, int high) {
         Set<Integer> intSet = new HashSet<>();
