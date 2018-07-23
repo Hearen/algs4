@@ -5,41 +5,49 @@ import static chap2.section1.SortUtil.less;
 
 public class PriorityQueue<Key extends Comparable<Key>> {
     private Key[] pq;
-    private int N = 0;
+    private int index = 0;
 
     public PriorityQueue(int maxN) {
-        pq = (Key[]) new Comparable[maxN];
+        pq = (Key[]) new Comparable[maxN + 1];
     }
 
     public boolean isEmpty() {
-        return N == 0;
+        return index == 0;
     }
 
     public int size() {
-        return N;
+        return index;
     }
 
     public void insert(Key v) {
-        pq[++N] = v;
-        swim(N);
+        pq[++index] = v;
+        swim(index);
     }
 
     public Key delMax() {
         Key max = pq[1];
-        pq[1] = pq[N--];
+        pq[1] = pq[index--];
         sink(1);
         return max;
     }
 
     private void sink(int n) {
-        while (n * 2 < N) {
-            if (2 * n < N - 1 && less(pq[n * 2], pq[n * 2 + 1])) exch(pq, n * 2, n * 2 + 1);
-            if (less(pq[n], pq[n * 2])) exch(pq, n, n * 2);
+        int j = n * 2;
+        while (j < index) {
+            if (j < index && less(pq[j], pq[j + 1])) j++;
+            if (less(pq[n], pq[j])) {
+                exch(pq, n, j);
+                n = j;
+                j *= 2;
+            }
             else break;
         }
     }
 
     private void swim(int n) {
-        while (n > 1 && less(pq[n / 2], pq[n])) n /= 2;
+        while (n > 1 && less(pq[n / 2], pq[n])) {
+            exch(pq, n, n / 2);
+            n /= 2;
+        }
     }
 }
