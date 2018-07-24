@@ -3,6 +3,7 @@ package chap2.section1;
 import chap1.section4.StopWatch;
 import chap2.section2.MergeSort;
 import chap2.section3.QuickSort;
+import chap2.section4.SortByPQ;
 import util.Generator;
 
 import java.util.*;
@@ -19,7 +20,8 @@ public class TestSort {
         SELECTION,
         SHELL,
         MERGE,
-        QUICK;
+        QUICK,
+        HEAP;
     }
 
     private static void testSort(Comparable[] arr, SortTypeEnum typeEnum) {
@@ -32,7 +34,8 @@ public class TestSort {
             case SELECTION: SelectionSort.sort(newArr); break;
             case SHELL: ShellSort.sort(newArr); break;
             case MERGE: MergeSort.sort(newArr); break;
-            case QUICK: QuickSort.sort(newArr, QuickSort.SortType.SORT_3_WAY_INTERATION); break;
+            case QUICK: QuickSort.sort(newArr, QuickSort.SortType.RECURSIVE); break;
+            case HEAP: SortByPQ.sort(newArr); break;
             default: break;
         }
 //        System.out.println("**** End Of Sort ");
@@ -43,7 +46,7 @@ public class TestSort {
     }
     public static void main(String... args) {
         for (int j = 0; j < TEST_TIMES; ++j) {
-            int N = 20_000;
+            int N = 200_000;
 //            Integer[] arr = Arrays.stream(Generator.generateRandomUniqueArrays(N, -N, N)).boxed().toArray(Integer[]::new);
             Integer[] arr = Arrays.stream(Generator.generateRandomSizeArrays(N, N + N / 10)).boxed().toArray(Integer[]::new);
             Arrays.sort(arr); // test the worse case for quick sortBasicRecursion;
@@ -53,9 +56,10 @@ public class TestSort {
 //            System.out.println(Arrays.deepToString(arr));
 //            testSort(arr, SortTypeEnum.INSERTION);
 //            testSort(arr, SortTypeEnum.SELECTION);
-//            testSort(arr, SortTypeEnum.SHELL);
-//            testSort(arr, SortTypeEnum.MERGE);
+            testSort(arr, SortTypeEnum.SHELL);
+            testSort(arr, SortTypeEnum.MERGE);
             testSort(arr, SortTypeEnum.QUICK);
+            testSort(arr, SortTypeEnum.HEAP);
 //            QuickSort.sort(arr, QuickSort.SortType.SORT_3_WAY_RECURSION);
         }
 //        timerMap.entrySet().stream().forEach(System.out::println);

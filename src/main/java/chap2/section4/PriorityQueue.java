@@ -11,6 +11,12 @@ public class PriorityQueue<Key extends Comparable<Key>> {
         pq = (Key[]) new Comparable[maxN + 1];
     }
 
+    public PriorityQueue(Key[] arr) {
+        int len = arr.length;
+        pq = (Key[]) new Comparable[len + 1];
+        for (int i = 0; i < len; ++i) pq[i+1] = arr[i];
+    }
+
     public boolean isEmpty() {
         return index == 0;
     }
@@ -31,7 +37,11 @@ public class PriorityQueue<Key extends Comparable<Key>> {
         return max;
     }
 
-    private void sink(int n) {
+    public void exchE(int i, int j) {
+        exch(pq, i, j);
+    }
+
+    public void sink(int n) {
         int j = n * 2;
         while (j < index) {
             if (j < index && less(pq[j], pq[j + 1])) j++;
@@ -44,7 +54,7 @@ public class PriorityQueue<Key extends Comparable<Key>> {
         }
     }
 
-    private void swim(int n) {
+    public void swim(int n) {
         while (n > 1 && less(pq[n / 2], pq[n])) {
             exch(pq, n, n / 2);
             n /= 2;

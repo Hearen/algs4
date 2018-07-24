@@ -2,6 +2,7 @@ package chap2.section3;
 
 import static chap2.section1.SortUtil.exch;
 import static chap2.section1.SortUtil.less;
+import static chap2.section1.SortUtil.shuffle;
 
 import java.util.Stack;
 
@@ -12,16 +13,18 @@ public class QuickSort {
     static int level = 0;
 
     public static void sort(Comparable[] arr) {
-//        shuffle(arr); // to avoid bad case, shuffle it first;
+        shuffle(arr); // to avoid bad case, shuffle it first;
 //        sortBasicRecursion(arr, 0, arr.length - 1);
         sortIteration(arr, 0, arr.length - 1, PartitionType.PARTITION_1);
     }
 
     public static void sort(Comparable[] arr, SortType sortType) {
+        shuffle(arr); // to avoid bad case, shuffle it first;
         sort(arr, sortType, PartitionType.PARTITION_2);
     }
 
     public static void sort(Comparable[] arr, SortType sortType, PartitionType partitionType) {
+        shuffle(arr); // to avoid bad case, shuffle it first;
         int r = arr.length - 1;
         switch (sortType) {
             case ITERATION:

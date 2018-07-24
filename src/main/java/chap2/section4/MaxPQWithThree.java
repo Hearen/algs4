@@ -3,12 +3,15 @@ package chap2.section4;
 import static chap2.section1.SortUtil.exch;
 import static chap2.section1.SortUtil.less;
 
-public class PriorityQueueStartWithZero<Key extends Comparable<Key>> {
+public class MaxPQWithThree<Key extends Comparable<Key>>{
     Key[] arr;
     int index;
-
-    public PriorityQueueStartWithZero(int size) {
+    public MaxPQWithThree(int size) {
         arr = (Key[]) new Comparable[size];
+        index = -1;
+    }
+    public MaxPQWithThree(Key[] theArr) {
+        arr = theArr;
         index = -1;
     }
 
@@ -26,21 +29,25 @@ public class PriorityQueueStartWithZero<Key extends Comparable<Key>> {
     }
 
     private void sink(int k) {
-        int j = 2 * k + 1;
+        int j = k * 3;
         while (j <= index) {
-            if (j < index && less(arr[j], arr[j + 1])) j++;
+            int j1 = j + 1;
+            int j2 = j + 2;
+            if(j1 <= index && less(arr[j], arr[j1])) j = j1;
+            if(j2 <= index && less(arr[j], arr[j2])) j = j2;
             if (less(arr[k], arr[j])) {
                 exch(arr, k, j);
                 k = j;
-                j = 2 * j + 1;
+                j *= 3;
             } else break;
         }
     }
 
     private void swim(int k) {
-        while (k > 0 && less(arr[(k - 1) / 2], arr[k])) {
-            exch(arr, (k - 1) / 2, k);
-            k = (k - 1) / 2;
+        while (k > -1 && less(arr[k/3], arr[k])) {
+            exch(arr, k/3, k);
+            k /= 3;
         }
     }
+
 }
