@@ -22,27 +22,8 @@ public class SortByPQ {
         for (int i = 0; i < arrCount; ++i) {
             pq[i] = new Pair(arrs[i][++indexes[i]], arrs[i]);
         }
-        for (int i = arrCount/2; i > -1; --i) sink(pq, i, arrCount-1);
         List<Comparable> list = new ArrayList<>();
 
-    }
-
-    private static void sink(Pair<Comparable, Comparable[]>[] pq, int i, int lastIndex) {
-        int j = 2 * i + 1;
-        while (j <= lastIndex) {
-            if (j < lastIndex && less(pq[j].getKey(), pq[j+1].getKey())) j++;
-            if (pq[i].getKey() == null || less(pq[i].getKey(), pq[j].getKey())) {
-                exch(pq, i, j);
-                i = j;
-                j = 2 * j + 1;
-            } else break;
-        }
-    }
-
-    private static void exch(Pair[] pq, int i, int j) {
-        Pair t = pq[i];
-        pq[i] = pq[j];
-        pq[j] = t;
     }
 
     private static void sortByPQRule(Comparable[] arr) {
