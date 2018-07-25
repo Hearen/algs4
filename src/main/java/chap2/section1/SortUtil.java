@@ -1,10 +1,16 @@
 package chap2.section1;
 
+import java.util.Arrays;
 import java.util.Random;
+import java.util.stream.Stream;
 
 public class SortUtil {
     public static boolean less(Comparable a, Comparable b) {
         return a.compareTo(b) < 0;
+    }
+
+    public static boolean isAscended(int[] arr) {
+        return isAscended(Arrays.stream(arr).boxed().toArray(Integer[]::new));
     }
 
     public static boolean isAscended(Comparable[] arr) {
