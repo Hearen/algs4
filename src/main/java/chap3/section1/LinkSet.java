@@ -204,7 +204,7 @@ public class LinkSet<Key extends Comparable<Key>, Value> {
         return new KeyIterator(head.next);
     }
 
-    class KeyIterator implements Iterator<Key> {
+    class KeyIterator implements Iterator {
         Node p;
 
         public KeyIterator(Node head) {
