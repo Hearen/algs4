@@ -2,10 +2,10 @@ package chap3.section1;
 
 import java.util.Iterator;
 
-public class LinkSet<Key extends Comparable<Key>, Value> {
+public class OrderedLinkSet<Key extends Comparable<Key>, Value> {
     Node head; // sentinel;
 
-    public LinkSet() {
+    public OrderedLinkSet() {
         head = new Node();
     }
 
@@ -41,6 +41,7 @@ public class LinkSet<Key extends Comparable<Key>, Value> {
                 }
             }
         }
+        if (p != null && key.compareTo(p.key) > 0) p.next = new Node(key, value, p.next);
     }
 
     public Value get(Key key) {
@@ -177,55 +178,74 @@ public class LinkSet<Key extends Comparable<Key>, Value> {
      * @param hi
      * @return
      */
-    public Iterator<Key> keys(Key lo, Key hi) {
-        Node newHead = new Node();
-        Node tail = new Node();
+    public Iterable<Key> keys(Key lo, Key hi) {
+        Set set = new Set();
         Node p = head.next;
         boolean inTheZone = false; // using inTheZone flag to avoid key comparison;
         while (p != null) {
             if (!inTheZone && p.key.compareTo(lo) >= 0) inTheZone = true;
             if (inTheZone) {
                 if (p.key.compareTo(hi) <= 0) {
-                    if (newHead.next == null) {
-                        newHead.next = new Node(p.key, p.val, null);
-                        tail = newHead.next;
-                    } else {
-                        tail.next = new Node(p.key, p.val, null);
-                        tail = tail.next;
-                    }
+                    set.add(new Node(p.key, p.val, null));
                 } else break;
             }
             p = p.next;
         }
-        return new KeyIterator(newHead.next);
+        return set;
     }
 
-    public Iterator<Key> keys() {
-        return new KeyIterator(head.next);
-    }
-
-    class KeyIterator implements Iterator {
-        Node p;
-
-        public KeyIterator(Node head) {
-            this.p = head;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return p != null && p.next != null;
-        }
-
-        @Override
-        public Key next() {
-            Key key = p.key;
+    public Iterable<Key> keys() {
+        Set set = new Set();
+        Node p = head.next;
+        while (p != null) {
+            set.add(new Node(p.key, p.val, null));
             p = p.next;
-            return key;
+        }
+        return set;
+    }
+
+    class Set implements Iterable {
+        Node head;
+        Node tail;
+
+        public Set() {
+            head = new Node();
+            tail = new Node();
         }
 
+        public void add(Node node) {
+            if (head.next == null) {
+                head.next = node;
+            }
+            tail.next = node;
+            tail = tail.next;
+        }
+
+
         @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
+        public Iterator iterator() {
+            return new KeyIterator();
+        }
+
+        class KeyIterator implements Iterator {
+            Node p = head.next; // pointing to the current (to be used/iterated) node;
+
+            @Override
+            public boolean hasNext() {
+                return p != null;
+            }
+
+            @Override
+            public Key next() {
+                Key key = p.key;
+                p = p.next;
+                return key;
+            }
+
+            @Override
+            public void remove() {
+                throw new UnsupportedOperationException();
+            }
         }
     }
 
